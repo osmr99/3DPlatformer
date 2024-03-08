@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    [SerializeField] AudioSource SoundEffectController;
+    [SerializeField] AudioClip coinAudioEffect;
+    [SerializeField] AudioClip hurtAudioEffect;
     float moveSpeed = 10;
     //float jumpPower = 7.5f;
     float jumpPower = 5;
@@ -19,7 +21,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(0, 10, 0);
+        transform.position = new Vector3(0, 5, 0);
         rb = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
     }
@@ -34,9 +36,6 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
         }
-
-
-
 
         rightMovementInput = Input.GetAxis("Horizontal2") * moveSpeed;
         //Vector3 zAmount = Vector3.back * zMovement;
@@ -66,8 +65,18 @@ public class Player : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
+    private void OnTriggerEnter(Collider other)
     {
-
+        if (other.TryGetComponent(out Coin Coin))
+        {
+            GameObject.Destroy(other.gameObject);
+            SoundEffectController.volume = 0.25f;
+            SoundEffectController.PlayOneShot(coinAudioEffect);
+        }
+        if (other.TryGetComponent(out Hazard Hazard))
+        {
+            SoundEffectController.volume = 0.1f;
+            SoundEffectController.PlayOneShot(hurtAudioEffect);
+        }
     }
 }

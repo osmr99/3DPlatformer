@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] GameObject mainCoin;
+    [SerializeField] CoinSpawner coinSpawnerScript;
 
-    // Update is called once per frame
-    void Update()
+    public void OnTriggerEnter(Collider other)
     {
-        
+        Debug.Log("Money!");
     }
 }
