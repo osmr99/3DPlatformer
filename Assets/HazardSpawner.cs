@@ -7,7 +7,7 @@ public class HazardSpawner : MonoBehaviour
 {
     [SerializeField] GameObject mainHazard;
     GameObject hazard;
-    private float spawnRate = 0.005f;
+    private float spawnRate = 0.001f;
     float spawnElapsed = 0;
     int hazardsSpawned = 0;
 
@@ -28,7 +28,7 @@ public class HazardSpawner : MonoBehaviour
             spawnElapsed = 0;
             hazardsSpawned++;
         }
-        if (hazardsSpawned == 200)
+        if (hazardsSpawned == 75)
             enabled = false;
     }
 
