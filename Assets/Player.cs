@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     [SerializeField] AudioSource SoundEffectController;
     [SerializeField] AudioClip coinAudioEffect;
     [SerializeField] AudioClip hurtAudioEffect;
+    [SerializeField] PlayerStats playerStatsFile;
+    [SerializeField] GameObject player;
     float moveSpeed = 10;
     //float jumpPower = 7.5f;
     float jumpPower = 5;
@@ -63,6 +65,9 @@ public class Player : MonoBehaviour
 
         rb.velocity = movementVector;
 
+        if (playerStatsFile.currentHealth <= 0)
+            GameObject.Destroy(player);
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -70,13 +75,18 @@ public class Player : MonoBehaviour
         if (other.TryGetComponent(out Coin Coin))
         {
             GameObject.Destroy(other.gameObject);
-            SoundEffectController.volume = 0.25f;
+            //SoundEffectController.volume = 0.25f;
+            SoundEffectController.volume = 1f;
             SoundEffectController.PlayOneShot(coinAudioEffect);
+            playerStatsFile.pickingCoin();
         }
         if (other.TryGetComponent(out Hazard Hazard))
         {
-            SoundEffectController.volume = 0.1f;
+            //SoundEffectController.volume = 0.1f;
+            SoundEffectController.volume = 2f;
             SoundEffectController.PlayOneShot(hurtAudioEffect);
+            playerStatsFile.takingDamage();
+
         }
     }
 }

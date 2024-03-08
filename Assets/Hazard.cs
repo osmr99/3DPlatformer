@@ -6,6 +6,7 @@ public class Hazard : MonoBehaviour
 {
 
     [SerializeField] GameObject mainHazard;
+    [SerializeField] PlayerStats playerStatsFile;
 
     private void OnTriggerEnter(Collider other)
     {
