@@ -173,6 +173,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b5f7b092c64acb94697984a4fb50b558, type: 3}
   m_PrefabInstance: {fileID: 1774911064}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &660972557 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: b5f7b092c64acb94697984a4fb50b558, type: 3}
+  m_PrefabInstance: {fileID: 1774911064}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,7 +334,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 14.9
   m_Depth: -1
   m_CullingMask:
@@ -354,8 +359,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0025271245, y: -0.9749955, z: 0.22193298, w: -0.011100667}
-  m_LocalPosition: {x: -0.71123075, y: 18.568697, z: 43.554764}
+  m_LocalRotation: {x: 0.0013458612, y: -0.9860871, z: 0.1660321, w: 0.007993991}
+  m_LocalPosition: {x: 0.07260789, y: 3.0503674, z: 9.324793}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -687,7 +692,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.72, y: 2.06, z: 0.79}
+  m_Size: {x: 0.72, y: 2.05, z: 0.79}
   m_Center: {x: 0, y: 0.54, z: 0}
 --- !u!23 &1475769911
 MeshRenderer:
@@ -772,6 +777,7 @@ MonoBehaviour:
   hurtAudioEffect: {fileID: 8300000, guid: b90875e5bc25cc04d986c15ce479dc74, type: 3}
   playerStatsFile: {fileID: 1006139377}
   player: {fileID: 1475769908}
+  anim: {fileID: 660972557}
 --- !u!82 &1475769915
 AudioSource:
   m_ObjectHideFlags: 0
@@ -970,6 +976,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Neutral Idle
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: b5f7b092c64acb94697984a4fb50b558, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 70e13fc0eea989c4d9c1e2f4fb825a18, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 825894089210680117, guid: b5f7b092c64acb94697984a4fb50b558, type: 3}

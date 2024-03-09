@@ -10,7 +10,10 @@ public class Player : MonoBehaviour
     [SerializeField] AudioClip hurtAudioEffect;
     [SerializeField] PlayerStats playerStatsFile;
     [SerializeField] GameObject player;
-    float moveSpeed = 10;
+    [SerializeField] Animator anim;
+
+    //float moveSpeed = 10;
+    float moveSpeed = 3.5f;
     //float jumpPower = 7.5f;
     float jumpPower = 5;
     bool onGround = false;
@@ -18,14 +21,16 @@ public class Player : MonoBehaviour
     float forwardMovementInput;
     float rightMovementInput;
     Rigidbody rb;
+    Animator animObject;
 
     Transform cam;
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(0, 5, 0);
+        transform.position = new Vector3(0, 1, 0);
         rb = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
+        animObject = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -74,8 +79,12 @@ public class Player : MonoBehaviour
             SoundEffectController.PlayOneShot(hurtAudioEffect);
             GameObject.Destroy(player);
         }
-            
 
+        anim.SetFloat("speed", movementVector.magnitude);
+
+        movementVector.y = 0;
+        anim.transform.forward = movementVector;
+        
     }
 
     private void OnTriggerEnter(Collider other)
