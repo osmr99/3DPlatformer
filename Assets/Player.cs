@@ -60,13 +60,21 @@ public class Player : MonoBehaviour
         Vector3 rightRelative = rightMovementInput * camRight;
 
         Vector3 movementVector = (forwardRelative + rightRelative).normalized * moveSpeed;
+        //Vector3 movementVector = (forwardRelative + rightRelative) * moveSpeed;
 
         movementVector.y = rb.velocity.y;
 
         rb.velocity = movementVector;
 
+        //rb.AddForce(movementVector * moveSpeed, ForceMode.Force);
+
         if (playerStatsFile.currentHealth <= 0)
+        {
+            SoundEffectController.volume = 0.1f;
+            SoundEffectController.PlayOneShot(hurtAudioEffect);
             GameObject.Destroy(player);
+        }
+            
 
     }
 
@@ -75,15 +83,15 @@ public class Player : MonoBehaviour
         if (other.TryGetComponent(out Coin Coin))
         {
             GameObject.Destroy(other.gameObject);
-            //SoundEffectController.volume = 0.25f;
-            SoundEffectController.volume = 1f;
+            SoundEffectController.volume = 0.25f;
+            //SoundEffectController.volume = 1f;
             SoundEffectController.PlayOneShot(coinAudioEffect);
             playerStatsFile.pickingCoin();
         }
         if (other.TryGetComponent(out Hazard Hazard))
         {
-            //SoundEffectController.volume = 0.1f;
-            SoundEffectController.volume = 2f;
+            SoundEffectController.volume = 0.1f;
+            //SoundEffectController.volume = 2f;
             SoundEffectController.PlayOneShot(hurtAudioEffect);
             playerStatsFile.takingDamage();
 

@@ -9,7 +9,7 @@ public class HazardSpawner : MonoBehaviour
     GameObject hazard;
     private float spawnRate = 0.001f;
     float spawnElapsed = 0;
-    int hazardsSpawned = 0;
+    int hazardsOnScreen = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -26,9 +26,9 @@ public class HazardSpawner : MonoBehaviour
         {
             SpawnTheHazards();
             spawnElapsed = 0;
-            hazardsSpawned++;
+            hazardsOnScreen++;
         }
-        if (hazardsSpawned == 75)
+        if (hazardsOnScreen == 75)
             enabled = false;
     }
 
