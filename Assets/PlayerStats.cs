@@ -7,8 +7,8 @@ public class PlayerStats : MonoBehaviour
 
     
     [SerializeField] public float currentHealth;
-    [SerializeField] float maxHealth;
-    [SerializeField] float healthRegen;
+    [SerializeField] public float maxHealth;
+    [SerializeField] public float healthRegen;
     [SerializeField] AudioSource SoundEffectController;
     [SerializeField] AudioClip hurtAudioEffect;
     // Start is called before the first frame update

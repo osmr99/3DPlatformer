@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     float rightMovementInput;
     Rigidbody rb;
     Animator animObject;
+    
 
     Transform cam;
     // Start is called before the first frame update
@@ -44,6 +45,23 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             anim.SetTrigger("jump");
         }
+        if (Input.GetKey(KeyCode.LeftShift) && (((playerStatsFile.healthRegen >= 0.1f && playerStatsFile.currentHealth != playerStatsFile.maxHealth)) || playerStatsFile.currentHealth == playerStatsFile.maxHealth))
+        {
+            moveSpeed = 6.5f;
+            if (onGround)
+                anim.SetTrigger("isSprinting");
+        }
+        else if (playerStatsFile.healthRegen < 0.1f && playerStatsFile.currentHealth != playerStatsFile.maxHealth)
+            moveSpeed = 1;
+        else
+           moveSpeed = 3.5f;
+
+
+        if (transform.position.y >= 0.45f && onGround)
+            anim.SetBool("onGround", true);
+        else
+            anim.SetBool("onGround", false);
+
 
         rightMovementInput = Input.GetAxis("Horizontal2") * moveSpeed;
         //Vector3 zAmount = Vector3.back * zMovement;
@@ -80,12 +98,18 @@ public class Player : MonoBehaviour
             SoundEffectController.PlayOneShot(hurtAudioEffect);
             GameObject.Destroy(player);
         }
+        if(transform.position.y < -200)
+        {
+            SoundEffectController.volume = 0.1f;
+            SoundEffectController.PlayOneShot(hurtAudioEffect);
+            GameObject.Destroy(player);
+        }
+
 
         anim.SetFloat("speed", movementVector.magnitude);
 
         movementVector.y = 0;
-        anim.transform.forward = movementVector;
-        
+        anim.transform.forward = movementVector; 
     }
 
     private void OnTriggerEnter(Collider other)
@@ -104,6 +128,8 @@ public class Player : MonoBehaviour
             //SoundEffectController.volume = 2f;
             SoundEffectController.PlayOneShot(hurtAudioEffect);
             playerStatsFile.takingDamage();
+            anim.SetTrigger("hurt");
+
 
         }
     }

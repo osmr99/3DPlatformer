@@ -9,6 +9,7 @@ public class View : MonoBehaviour
     [SerializeField] AudioClip overworldMusic;
     [SerializeField] AudioClip hurtAudioEffect;
     [SerializeField] PlayerStats playerStatsFile;
+    [SerializeField] Player player;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +27,13 @@ public class View : MonoBehaviour
             SoundEffectController.enabled = false;
             enabled = false;
         }
+        if(player.transform.position.y < -200)
+        {
+            SoundEffectController.loop = false;
+            SoundEffectController.enabled = false;
+            enabled = false;
+        }
+
             
 
     }
