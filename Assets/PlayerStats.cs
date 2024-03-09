@@ -10,11 +10,12 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] public float maxHealth;
     [SerializeField] public float healthRegen;
     [SerializeField] AudioSource SoundEffectController;
-    [SerializeField] AudioClip hurtAudioEffect;
+    [SerializeField] AudioClip gameOverSFX;
     // Start is called before the first frame update
     void Start()
     {
         SoundEffectController.volume = 0.1f;
+        SoundEffectController.pitch = 1;
     }
 
     // Update is called once per frame
@@ -35,16 +36,21 @@ public class PlayerStats : MonoBehaviour
         }
         if (healthRegen > 2) // Health regeneration cap limit
             healthRegen = 2;
-        if (currentHealth <= 0) // Gamve Over WIP
+        if (currentHealth <= 0) // Game Over WIP
         {
-            damageSFX();
             enabled = false; // Disables the whole Update function here due to the Game Over
         }
             
     }
-    void damageSFX()
+    public void gameOver()
     {
-        SoundEffectController.PlayOneShot(hurtAudioEffect);
+        SoundEffectController.PlayOneShot(gameOverSFX); // I feel nostalgic listening to this...
+    }
+
+    public void fellOutOfWorld()
+    {
+        SoundEffectController.pitch = 1.25f;
+        SoundEffectController.PlayOneShot(gameOverSFX);
     }
 
     public void takingDamage()

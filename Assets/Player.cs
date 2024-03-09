@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Cinemachine;
 
 public class Player : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Player : MonoBehaviour
     [SerializeField] PlayerStats playerStatsFile;
     [SerializeField] GameObject player;
     [SerializeField] Animator anim;
+    [SerializeField] CinemachineVirtualCamera playerCam;
+    [SerializeField] CinemachineVirtualCamera mapCam;
 
     //float moveSpeed = 10;
     float moveSpeed = 3;
@@ -32,12 +35,13 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
         animObject = GetComponent<Animator>();
+        playerCam.Priority = 1;
+        mapCam.Priority = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-
         onGround = (Physics.Raycast(transform.position, Vector3.up * -1, groundCheckDistance));
         Debug.DrawLine(transform.position, transform.position + transform.up * -groundCheckDistance, Color.red);
         if (Input.GetButtonDown("Jump") && onGround) // Jumping method
@@ -55,13 +59,31 @@ public class Player : MonoBehaviour
         else if (playerStatsFile.healthRegen < 0.1f && playerStatsFile.currentHealth != playerStatsFile.maxHealth)
             moveSpeed = 1; // When the player gets hurt, their speed is penalized for half a second
         else
-           moveSpeed = 3;
+        {
+            moveSpeed = 3;
+            jumpPower = 5;
+        }
+            
 
 
         if (transform.position.y >= 0.45f && onGround) // This controls the falling animation
             anim.SetBool("onGround", true);
         else
             anim.SetBool("onGround", false);
+
+        if(Input.GetKey(KeyCode.M) && onGround) // Controls the map
+        {
+            playerCam.Priority = 0;
+            mapCam.Priority = 1;
+            moveSpeed = 0;
+            jumpPower = 0;
+        }
+        else
+        {
+            playerCam.Priority = 1;
+            mapCam.Priority = 0;
+        }
+
 
 
         rightMovementInput = Input.GetAxis("Horizontal2") * moveSpeed; // I created my custom Axis here.
@@ -89,25 +111,23 @@ public class Player : MonoBehaviour
 
         rb.velocity = movementVector;
 
-
-        if (playerStatsFile.currentHealth <= 0) // Game Over Scene WIP
-        {
-            SoundEffectController.volume = 0.1f;
-            SoundEffectController.PlayOneShot(hurtAudioEffect);
-            GameObject.Destroy(player);
-        }
-        if(transform.position.y < -100) // The player fell out of the world
-        {
-            SoundEffectController.volume = 0.1f;
-            SoundEffectController.PlayOneShot(hurtAudioEffect);
-            GameObject.Destroy(player);
-        }
-
-
         anim.SetFloat("speed", movementVector.magnitude);
 
         movementVector.y = 0;                    // This makes the player face the
         anim.transform.forward = movementVector; // direction they are walking.
+
+        if (playerStatsFile.currentHealth <= 0) // Game Over Scene WIP
+        {
+            anim.SetTrigger("gameOver");
+            playerStatsFile.gameOver();
+            enabled = false; // Disables the Update() method here, which controls the player movement and animations
+        }
+        if(transform.position.y < -50) // The player fell out of the world
+        {
+            playerStatsFile.fellOutOfWorld();
+            GameObject.Destroy(player); // Literally FELL out of the world
+            enabled = false;            // Disables the Update() method here, which controls the player movement and animations
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -122,13 +142,14 @@ public class Player : MonoBehaviour
         }
         if (other.TryGetComponent(out Hazard Hazard)) // Taking damage from hazards method
         {
-            SoundEffectController.volume = 0.1f;
-            //SoundEffectController.volume = 2f;
-            SoundEffectController.PlayOneShot(hurtAudioEffect);
             playerStatsFile.takingDamage();
             anim.SetTrigger("hurt"); // Will run the hurt animation
-
-
+            if (playerStatsFile.currentHealth > 0)
+            {
+                SoundEffectController.volume = 0.1f;
+                //SoundEffectController.volume = 2f;
+                SoundEffectController.PlayOneShot(hurtAudioEffect);
+            }
         }
     }
 }

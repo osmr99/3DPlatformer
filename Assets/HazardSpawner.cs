@@ -36,7 +36,9 @@ public class HazardSpawner : MonoBehaviour
     {
         float x = Random.Range(-24, 24);
         float z = Random.Range(-24, 24);
+        float randomScale = Random.Range(0.5f,1);
         hazard = Instantiate(mainHazard);
         hazard.transform.position = new Vector3(x, 0, z);
+        hazard.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
     }
 }

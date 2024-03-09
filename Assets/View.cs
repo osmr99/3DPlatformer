@@ -7,7 +7,6 @@ public class View : MonoBehaviour
 
     [SerializeField] AudioSource SoundEffectController;
     [SerializeField] AudioClip overworldMusic;
-    [SerializeField] AudioClip hurtAudioEffect;
     [SerializeField] PlayerStats playerStatsFile;
     [SerializeField] Player player;
     // Start is called before the first frame update
@@ -27,7 +26,7 @@ public class View : MonoBehaviour
             SoundEffectController.enabled = false;
             enabled = false;
         }
-        if(player.transform.position.y < -100) // The player fell out of the world, the music will stop
+        if(player.transform.position.y < -50) // The player fell out of the world, the music will stop
         {
             SoundEffectController.loop = false;
             SoundEffectController.enabled = false;
