@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Jump") && onGround)
         {
             rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            anim.SetTrigger("jump");
         }
 
         rightMovementInput = Input.GetAxis("Horizontal2") * moveSpeed;
@@ -80,7 +81,7 @@ public class Player : MonoBehaviour
             GameObject.Destroy(player);
         }
 
-        anim.SetFloat("speed", movementVector.magnitude);
+        anim.SetFloat("speed", movementVector.sqrMagnitude);
 
         movementVector.y = 0;
         anim.transform.forward = movementVector;
