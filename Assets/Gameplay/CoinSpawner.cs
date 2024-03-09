@@ -42,6 +42,8 @@ public class CoinSpawner : MonoBehaviour
     {
         float x = Random.Range(-24, 24);
         float z = Random.Range(-24, 24);
+        //float x = Random.Range(-1, 1);
+        //float z = Random.Range(-1, 1);
         coin = Instantiate(mainCoin);
         coin.transform.position = new Vector3(x, 1, z);
         coin.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);

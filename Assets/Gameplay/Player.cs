@@ -29,7 +29,8 @@ public class Player : MonoBehaviour
     float forwardMovementInput;
     float rightMovementInput;
     int loadStuff = 0;
-    
+    public int coinsPickedUp = 0;
+
     Scene currentScene;
     // Start is called before the first frame update
     void Start()
@@ -127,17 +128,24 @@ public class Player : MonoBehaviour
             {
                 anim.SetTrigger("gameOver");
                 playerStatsFile.gameOver();
-                SceneManager.LoadScene(2);
-                enabled = false; // Disables the Update() method here, which controls the player movement and animations
+                waitTheGameOver();
+                enabled = false;
             }
-            if (transform.position.y < -50) // The player fell out of the world
+            if (transform.position.y < -50)     // The player fell out of the world
             {
                 playerStatsFile.fellOutOfWorld();
-                GameObject.Destroy(player); // Literally FELL out of the world
-                enabled = false;            // Disables the Update() method here, which controls the player movement and animations
+                gameObject.transform.localScale = Vector3.zero;
+                waitTheGameOverTwo();           
+                enabled = false;                // Disables the Update() method here, which controls the player movement and animations
+            }
+
+            if(coinsPickedUp == 100)
+            {
+                playerStatsFile.win();
+                waitTheWin();
+                enabled = false;
             }
         }
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -149,6 +157,7 @@ public class Player : MonoBehaviour
             //SoundEffectController.volume = 1f;
             SoundEffectController.PlayOneShot(coinAudioEffect);
             playerStatsFile.pickingCoin();
+            coinsPickedUp++;
         }
         if (other.TryGetComponent(out Hazard Hazard)) // Taking damage from hazards method
         {
@@ -161,5 +170,56 @@ public class Player : MonoBehaviour
                 SoundEffectController.PlayOneShot(hurtAudioEffect);
             }
         }
+    }
+
+    void waitTheGameOver()
+    {
+        StartCoroutine(theGameOver());
+    }
+
+    private IEnumerator theGameOver()
+    {
+        float countDown = 8f;
+        while (countDown >= 0)
+        {
+            countDown -= Time.deltaTime;
+            //Debug.Log(countDown);
+            yield return null;
+        }
+        SceneManager.LoadScene(2);
+    }
+
+    void waitTheGameOverTwo()
+    {
+        StartCoroutine(theGameOverTwo());
+    }
+
+    private IEnumerator theGameOverTwo()
+    {
+        float countDown = 6.5f;
+        while (countDown >= 0)
+        {
+            countDown -= Time.deltaTime;
+            //Debug.Log(countDown);
+            yield return null;
+        }
+        SceneManager.LoadScene(2);
+    }
+
+    void waitTheWin()
+    {
+        StartCoroutine(theWin());
+    }
+
+    private IEnumerator theWin()
+    {
+        float countDown = 5f;
+        while (countDown >= 0)
+        {
+            countDown -= Time.deltaTime;
+            //Debug.Log(countDown);
+            yield return null;
+        }
+        SceneManager.LoadScene(3);
     }
 }

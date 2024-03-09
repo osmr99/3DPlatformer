@@ -17,7 +17,7 @@ public class menuScript : MonoBehaviour
     float menuTime = 0;
     int toggle = 1;
     float cooldownNum = -1;
-    float cooldown = 2.5f;
+    float cooldown = 2.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,8 +47,6 @@ public class menuScript : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                //Debug.Log("a");
-                //SceneManager.LoadScene(1);
                 titlePanel.SetActive(false);
                 pressEnterPanel.SetActive(false);
                 TitleTextTwo.SetActive(false);

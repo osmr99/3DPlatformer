@@ -43,6 +43,13 @@ public class View : MonoBehaviour
                 SoundEffectController.enabled = false;
                 enabled = false;
             }
+            if(player.coinsPickedUp == 100)
+            {
+                SoundEffectController.loop = false;
+                SoundEffectController.enabled = false;
+                enabled = false;
+            }
+
         }
     }
 }
