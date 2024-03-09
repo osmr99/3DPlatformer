@@ -22,21 +22,23 @@ public class PlayerStats : MonoBehaviour
     {
         if (healthRegen < 2 && currentHealth != maxHealth)
         {
-            healthRegen += 0.1f * Time.deltaTime;
+            healthRegen += 0.1f * Time.deltaTime; // Constantly increases the value of the health regeneration
         }
-        if (currentHealth <= maxHealth)
-            currentHealth += healthRegen * Time.deltaTime;
+        if (currentHealth <= maxHealth)                    // If the current health it's not max then...
+            currentHealth += healthRegen * Time.deltaTime; // The player will start regenerating.
+                                                           // The more time they don't take damage,
+                                                           // the more regen they get
         if (currentHealth > maxHealth)
         {
-            currentHealth = maxHealth;
+            currentHealth = maxHealth; // Caps that the current health is not greater than the max health
             healthRegen = 0;
         }
-        if (healthRegen > 2)
+        if (healthRegen > 2) // Health regeneration cap limit
             healthRegen = 2;
-        if (currentHealth <= 0)
+        if (currentHealth <= 0) // Gamve Over WIP
         {
             damageSFX();
-            enabled = false;
+            enabled = false; // Disables the whole Update function here due to the Game Over
         }
             
     }
@@ -48,11 +50,11 @@ public class PlayerStats : MonoBehaviour
     public void takingDamage()
     {
         currentHealth -= 5;
-        healthRegen = 0;
+        healthRegen = 0; // When the player takes damage, the health regen value is reset to 0
     }
 
     public void pickingCoin()
     {
-        healthRegen += 0.25f;
+        healthRegen += 0.25f; // Picking up coins will increase the health regen
     }
 }

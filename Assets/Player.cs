@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] Animator anim;
 
     //float moveSpeed = 10;
-    float moveSpeed = 3.5f;
+    float moveSpeed = 3;
     //float jumpPower = 7.5f;
     float jumpPower = 5;
     bool onGround = false;
@@ -40,36 +40,36 @@ public class Player : MonoBehaviour
 
         onGround = (Physics.Raycast(transform.position, Vector3.up * -1, groundCheckDistance));
         Debug.DrawLine(transform.position, transform.position + transform.up * -groundCheckDistance, Color.red);
-        if (Input.GetButtonDown("Jump") && onGround)
+        if (Input.GetButtonDown("Jump") && onGround) // Jumping method
         {
             rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-            anim.SetTrigger("jump");
+            anim.SetTrigger("jump"); // Will run the jumping animation
         }
         if (Input.GetKey(KeyCode.LeftShift) && (((playerStatsFile.healthRegen >= 0.1f && playerStatsFile.currentHealth != playerStatsFile.maxHealth)) || playerStatsFile.currentHealth == playerStatsFile.maxHealth))
-        {
+        { // Player will start running. If hurt, running it's disabled for half a second
             moveSpeed = 6.5f;
-            if (onGround)
-                anim.SetTrigger("isSprinting");
+            if (onGround && (Input.GetButton("Horizontal2") || Input.GetButton("Vertical2")))
+                anim.SetTrigger("isSprinting"); // This will do the running animation if moving on ground
+                                                // otherwise, it will just increase the move speed 
         }
         else if (playerStatsFile.healthRegen < 0.1f && playerStatsFile.currentHealth != playerStatsFile.maxHealth)
-            moveSpeed = 1;
+            moveSpeed = 1; // When the player gets hurt, their speed is penalized for half a second
         else
-           moveSpeed = 3.5f;
+           moveSpeed = 3;
 
 
-        if (transform.position.y >= 0.45f && onGround)
+        if (transform.position.y >= 0.45f && onGround) // This controls the falling animation
             anim.SetBool("onGround", true);
         else
             anim.SetBool("onGround", false);
 
 
-        rightMovementInput = Input.GetAxis("Horizontal2") * moveSpeed;
-        //Vector3 zAmount = Vector3.back * zMovement;
-        //transform.position += zAmount * Time.deltaTime;
+        rightMovementInput = Input.GetAxis("Horizontal2") * moveSpeed; // I created my custom Axis here.
 
-        forwardMovementInput = Input.GetAxis("Vertical2") * moveSpeed;
-        //Vector3 xAmountH = Vector3.left * xMovement;
-        //transform.position += xAmountH * Time.deltaTime;
+        forwardMovementInput = Input.GetAxis("Vertical2") * moveSpeed; // I created my custom Axis here.
+
+        // This below controls the player movement and wherever the cameras faces,
+        // the movement input will be correct.
 
         Vector3 camForward = cam.forward;
         Vector3 camRight = cam.right;
@@ -84,21 +84,19 @@ public class Player : MonoBehaviour
         Vector3 rightRelative = rightMovementInput * camRight;
 
         Vector3 movementVector = (forwardRelative + rightRelative).normalized * moveSpeed;
-        //Vector3 movementVector = (forwardRelative + rightRelative) * moveSpeed;
 
         movementVector.y = rb.velocity.y;
 
         rb.velocity = movementVector;
 
-        //rb.AddForce(movementVector * moveSpeed, ForceMode.Force);
 
-        if (playerStatsFile.currentHealth <= 0)
+        if (playerStatsFile.currentHealth <= 0) // Game Over Scene WIP
         {
             SoundEffectController.volume = 0.1f;
             SoundEffectController.PlayOneShot(hurtAudioEffect);
             GameObject.Destroy(player);
         }
-        if(transform.position.y < -200)
+        if(transform.position.y < -100) // The player fell out of the world
         {
             SoundEffectController.volume = 0.1f;
             SoundEffectController.PlayOneShot(hurtAudioEffect);
@@ -108,13 +106,13 @@ public class Player : MonoBehaviour
 
         anim.SetFloat("speed", movementVector.magnitude);
 
-        movementVector.y = 0;
-        anim.transform.forward = movementVector; 
+        movementVector.y = 0;                    // This makes the player face the
+        anim.transform.forward = movementVector; // direction they are walking.
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Coin Coin))
+        if (other.TryGetComponent(out Coin Coin)) // Coin collecting method
         {
             GameObject.Destroy(other.gameObject);
             SoundEffectController.volume = 0.25f;
@@ -122,13 +120,13 @@ public class Player : MonoBehaviour
             SoundEffectController.PlayOneShot(coinAudioEffect);
             playerStatsFile.pickingCoin();
         }
-        if (other.TryGetComponent(out Hazard Hazard))
+        if (other.TryGetComponent(out Hazard Hazard)) // Taking damage from hazards method
         {
             SoundEffectController.volume = 0.1f;
             //SoundEffectController.volume = 2f;
             SoundEffectController.PlayOneShot(hurtAudioEffect);
             playerStatsFile.takingDamage();
-            anim.SetTrigger("hurt");
+            anim.SetTrigger("hurt"); // Will run the hurt animation
 
 
         }

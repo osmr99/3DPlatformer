@@ -7,7 +7,7 @@ public class HazardSpawner : MonoBehaviour
 {
     [SerializeField] GameObject mainHazard;
     GameObject hazard;
-    private float spawnRate = 0.001f;
+    private float spawnRate = 0.001f; // A very small value to make it look they spawn instantly
     float spawnElapsed = 0;
     int hazardsOnScreen = 1;
 
@@ -28,16 +28,15 @@ public class HazardSpawner : MonoBehaviour
             spawnElapsed = 0;
             hazardsOnScreen++;
         }
-        if (hazardsOnScreen == 75)
-            enabled = false;
+        if (hazardsOnScreen == 75) // Max amount of hazards that will spawn per game
+            enabled = false;       // Will disable this Update() method to stop spawning hazards
     }
 
-    private void SpawnTheHazards()
+    private void SpawnTheHazards() // Every time a new game starts, hazards will spawn randomly on the map
     {
         float x = Random.Range(-24, 24);
         float z = Random.Range(-24, 24);
         hazard = Instantiate(mainHazard);
         hazard.transform.position = new Vector3(x, 0, z);
-        //GameObject.Destroy(hazard, 0.2f);
     }
 }

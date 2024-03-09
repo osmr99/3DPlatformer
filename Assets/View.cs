@@ -11,7 +11,7 @@ public class View : MonoBehaviour
     [SerializeField] PlayerStats playerStatsFile;
     [SerializeField] Player player;
     // Start is called before the first frame update
-    void Start()
+    void Start() // Manages the Overworld music asset.
     {
         SoundEffectController.volume = 0.05f;
         SoundEffectController.PlayOneShot(overworldMusic);
@@ -21,13 +21,13 @@ public class View : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerStatsFile.currentHealth <= 0)
+        if(playerStatsFile.currentHealth <= 0) // When the player dies, the music will stop
         {
             SoundEffectController.loop = false;
             SoundEffectController.enabled = false;
             enabled = false;
         }
-        if(player.transform.position.y < -200)
+        if(player.transform.position.y < -100) // The player fell out of the world, the music will stop
         {
             SoundEffectController.loop = false;
             SoundEffectController.enabled = false;

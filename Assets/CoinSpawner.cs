@@ -7,9 +7,8 @@ using UnityEngine;
 public class CoinSpawner : MonoBehaviour
 {
     [SerializeField] GameObject mainCoin;
-    //[SerializeField] Coin coinScript;
     GameObject coin;
-    private float spawnRate = 0.001f;
+    private float spawnRate = 0.001f; // A very small value to make it look they spawn instantly
     float spawnElapsed = 0;
     int coinsOnScreen = 1;
 
@@ -24,17 +23,17 @@ public class CoinSpawner : MonoBehaviour
     {
         spawnElapsed += Time.deltaTime;
 
-        if (spawnElapsed >= spawnRate)
+        if (spawnElapsed >= spawnRate) 
         {
             SpawnTheCoins();
             spawnElapsed = 0;
             coinsOnScreen++;
         }
-        if (coinsOnScreen == 75)
-            enabled = false;
+        if (coinsOnScreen == 75)  // Max amount of hazards that will spawn per game
+            enabled = false;      // Will disable this Update() method to stop spawning coins
     }
 
-    private void SpawnTheCoins()
+    private void SpawnTheCoins() // Every time a new game starts, hazards will spawn randomly on the map
     {
         float x = Random.Range(-24, 24);
         float z = Random.Range(-24, 24);
