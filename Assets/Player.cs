@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
             GameObject.Destroy(player);
         }
 
-        anim.SetFloat("speed", movementVector.sqrMagnitude);
+        anim.SetFloat("speed", movementVector.magnitude);
 
         movementVector.y = 0;
         anim.transform.forward = movementVector;
