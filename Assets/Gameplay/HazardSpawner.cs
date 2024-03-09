@@ -2,34 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HazardSpawner : MonoBehaviour
 {
     [SerializeField] GameObject mainHazard;
     GameObject hazard;
-    private float spawnRate = 0.001f; // A very small value to make it look they spawn instantly
+    float spawnRate = 0.001f; // A very small value to make it look they spawn instantly
     float spawnElapsed = 0;
     int hazardsOnScreen = 1;
+    Scene currentScene;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentScene = SceneManager.GetActiveScene();
     }
 
     // Update is called once per frame
     void Update()
     {
-        spawnElapsed += Time.deltaTime;
-
-        if (spawnElapsed >= spawnRate)
+        if(currentScene.buildIndex == 1)
         {
-            SpawnTheHazards();
-            spawnElapsed = 0;
-            hazardsOnScreen++;
+            spawnElapsed += Time.deltaTime;
+
+            if (spawnElapsed >= spawnRate)
+            {
+                SpawnTheHazards();
+                spawnElapsed = 0;
+                hazardsOnScreen++;
+            }
+            if (hazardsOnScreen == 75) // Max amount of hazards that will spawn per game
+                enabled = false;       // Will disable this Update() method to stop spawning hazards
         }
-        if (hazardsOnScreen == 75) // Max amount of hazards that will spawn per game
-            enabled = false;       // Will disable this Update() method to stop spawning hazards
     }
 
     private void SpawnTheHazards() // Every time a new game starts, hazards will spawn randomly on the map

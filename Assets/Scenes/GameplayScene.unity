@@ -539,7 +539,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.328
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1063,6 +1063,9 @@ MonoBehaviour:
   anim: {fileID: 660972557}
   playerCam: {fileID: 2119228332}
   mapCam: {fileID: 511017785}
+  cam: {fileID: 963194228}
+  rb: {fileID: 1475769909}
+  animObject: {fileID: 660972557}
 --- !u!82 &1475769915
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1586,11 +1589,11 @@ SceneRoots:
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 1475769913}
+  - {fileID: 1006139378}
   - {fileID: 2057442069}
   - {fileID: 2422471996017773345}
   - {fileID: 1568180132}
   - {fileID: 4260827623627324857}
   - {fileID: 84196071}
-  - {fileID: 1006139378}
   - {fileID: 2119228333}
   - {fileID: 511017786}
